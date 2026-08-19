@@ -7,11 +7,14 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background-color: #0f172a; color: #f8fafc; padding: 20px; }
-    header { text-align: center; padding: 20px 0; border-bottom: 1px solid #334155; margin-bottom: 30px; }
-    header h1 { color: #38bdf8; font-size: 2rem; }
+    header { text-align: center; padding: 20px 0; border-bottom: 1px solid #334155; margin-bottom: 25px; }
+    header h1 { color: #38bdf8; font-size: 2rem; margin-bottom: 15px; }
+    
+    .search-container { max-width: 500px; margin: 0 auto 10px; }
+    .search-bar { width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #fff; font-size: 1rem; outline: none; }
+    .search-bar:focus { border-color: #38bdf8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.3); }
     
     .container { display: flex; gap: 24px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; }
-    
     .products { flex: 2; min-width: 300px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
     .product-card { background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; text-align: center; transition: transform 0.2s; }
     .product-card:hover { transform: translateY(-4px); }
@@ -28,12 +31,16 @@
     .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #334155; font-size: 0.9rem; }
     .total-box { font-weight: bold; font-size: 1.2rem; text-align: right; color: #f1f5f9; padding-top: 10px; border-top: 2px solid #334155; }
     .total-box span { color: #4ade80; }
+    .no-results { grid-column: 1 / -1; text-align: center; color: #94a3b8; padding: 20px; }
   </style>
 </head>
 <body>
 
   <header>
     <h1>⚡ TechStore Eletrônicos</h1>
+    <div class="search-container">
+      <input type="text" id="search-input" class="search-bar" placeholder="Pesquisar por nome ou categoria..." oninput="filterProducts()">
+    </div>
   </header>
 
   <div class="container">
@@ -55,14 +62,22 @@
       { id: 1, category: "Áudio", name: "Fone Bluetooth Pro", price: 299.90 },
       { id: 2, category: "Mobile", name: "Smartphone 128GB", price: 1899.00 },
       { id: 3, category: "Wearables", name: "Smartwatch Sport", price: 450.00 },
-      { id: 4, category: "Informática", name: "Teclado Mecânico RGB", price: 320.50 }
+      { id: 4, category: "Informática", name: "Teclado Mecânico RGB", price: 320.50 },
+      { id: 5, category: "Vídeo", name: "Monitor Gamer 144Hz", price: 1250.00 },
+      { id: 6, category: "Áudio", name: "Caixa de Som Bluetooth", price: 180.00 }
     ];
 
     let cart = [];
 
-    function renderProducts() {
+    function renderProducts(itemsToRender = products) {
       const productList = document.getElementById('product-list');
-      productList.innerHTML = products.map(product => `
+      
+      if (itemsToRender.length === 0) {
+        productList.innerHTML = '<div class="no-results">Nenhum produto encontrado.</div>';
+        return;
+      }
+
+      productList.innerHTML = itemsToRender.map(product => `
         <div class="product-card">
           <div class="category">${product.category}</div>
           <h3>${product.name}</h3>
@@ -70,6 +85,15 @@
           <button onclick="addToCart(${product.id})">Adicionar ao Carrinho</button>
         </div>
       `).join('');
+    }
+
+    function filterProducts() {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      const filtered = products.filter(product => 
+        product.name.toLowerCase().includes(query) || 
+        product.category.toLowerCase().includes(query)
+      );
+      renderProducts(filtered);
     }
 
     function addToCart(productId) {
