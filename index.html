@@ -3,54 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loja Virtual Simples</title>
+  <title>TechStore - Eletrônicos</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-    body { padding: 20px; background-color: #f4f4f9; color: #333; }
-    header { text-align: center; margin-bottom: 30px; }
-    header h1 { color: #2c3e50; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #0f172a; color: #f8fafc; padding: 20px; }
+    header { text-align: center; padding: 20px 0; border-bottom: 1px solid #334155; margin-bottom: 30px; }
+    header h1 { color: #38bdf8; font-size: 2rem; }
     
-    .container { display: flex; gap: 20px; flex-wrap: wrap; max-width: 1000px; margin: 0 auto; }
+    .container { display: flex; gap: 24px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; }
     
-    .products { flex: 2; min-width: 300px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-    .product-card { background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
-    .product-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
-    .product-card p { color: #27ae60; font-weight: bold; font-size: 1.2rem; margin-bottom: 12px; }
+    .products { flex: 2; min-width: 300px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+    .product-card { background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; text-align: center; transition: transform 0.2s; }
+    .product-card:hover { transform: translateY(-4px); }
+    .product-card h3 { font-size: 1.1rem; margin-bottom: 10px; color: #f1f5f9; }
+    .product-card .category { font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; font-weight: bold; }
+    .product-card .price { color: #4ade80; font-weight: bold; font-size: 1.25rem; margin-bottom: 15px; }
     
-    button { background: #3498db; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
-    button:hover { background: #2980b9; }
+    button { background: #0284c7; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; transition: background 0.2s; }
+    button:hover { background: #0369a1; }
     
-    .cart { flex: 1; min-width: 260px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: fit-content; }
-    .cart h2 { margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-    .cart ul { list-style: none; margin-bottom: 15px; max-height: 250px; overflow-y: auto; }
-    .cart li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.95rem; }
-    .total { font-weight: bold; font-size: 1.2rem; text-align: right; color: #2c3e50; margin-top: 10px; }
+    .cart { flex: 1; min-width: 280px; background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; height: fit-content; }
+    .cart h2 { color: #38bdf8; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+    .cart-list { list-style: none; margin-bottom: 20px; max-height: 280px; overflow-y: auto; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #334155; font-size: 0.9rem; }
+    .total-box { font-weight: bold; font-size: 1.2rem; text-align: right; color: #f1f5f9; padding-top: 10px; border-top: 2px solid #334155; }
+    .total-box span { color: #4ade80; }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Minha Loja Eletrônica</h1>
+    <h1>⚡ TechStore Eletrônicos</h1>
   </header>
 
   <div class="container">
     <div class="products" id="product-list"></div>
 
     <div class="cart">
-      <h2>Carrinho</h2>
-      <ul id="cart-items">
-        <li style="color: #888;">Seu carrinho está vazio.</li>
+      <h2>Carrinho de Compras</h2>
+      <ul class="cart-list" id="cart-items">
+        <li style="color: #94a3b8; text-align: center;">Nenhum produto adicionado.</li>
       </ul>
-      <div class="total">Total: R$ <span id="cart-total">0.00</span></div>
+      <div class="total-box">
+        Total: R$ <span id="cart-total">0,00</span>
+      </div>
     </div>
   </div>
 
   <script>
     const products = [
-      { id: 1, name: "Camiseta Básica", price: 49.90 },
-      { id: 2, name: "Calça Jeans", price: 129.90 },
-      { id: 3, name: "Tênis Esportivo", price: 199.90 },
-      { id: 4, name: "Boné Urbano", price: 35.00 }
+      { id: 1, category: "Áudio", name: "Fone Bluetooth Pro", price: 299.90 },
+      { id: 2, category: "Mobile", name: "Smartphone 128GB", price: 1899.00 },
+      { id: 3, category: "Wearables", name: "Smartwatch Sport", price: 450.00 },
+      { id: 4, category: "Informática", name: "Teclado Mecânico RGB", price: 320.50 }
     ];
 
     let cart = [];
@@ -59,8 +64,9 @@
       const productList = document.getElementById('product-list');
       productList.innerHTML = products.map(product => `
         <div class="product-card">
+          <div class="category">${product.category}</div>
           <h3>${product.name}</h3>
-          <p>R$ ${product.price.toFixed(2)}</p>
+          <div class="price">R$ ${product.price.toFixed(2).replace('.', ',')}</div>
           <button onclick="addToCart(${product.id})">Adicionar ao Carrinho</button>
         </div>
       `).join('');
@@ -77,18 +83,18 @@
       const cartTotal = document.getElementById('cart-total');
 
       if (cart.length === 0) {
-        cartItems.innerHTML = '<li style="color: #888;">Seu carrinho está vazio.</li>';
+        cartItems.innerHTML = '<li style="color: #94a3b8; text-align: center;">Nenhum produto adicionado.</li>';
       } else {
         cartItems.innerHTML = cart.map(item => `
-          <li>
+          <li class="cart-item">
             <span>${item.name}</span>
-            <span>R$ ${item.price.toFixed(2)}</span>
+            <strong>R$ ${item.price.toFixed(2).replace('.', ',')}</strong>
           </li>
         `).join('');
       }
 
       const total = cart.reduce((sum, item) => sum + item.price, 0);
-      cartTotal.textContent = total.toFixed(2);
+      cartTotal.textContent = total.toFixed(2).replace('.', ',');
     }
 
     renderProducts();
